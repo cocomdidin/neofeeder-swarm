@@ -22,9 +22,9 @@ services:
     ]
     tty: true
     volumes:
-      - /home/shadowbane/projects/neofeeder/pgsql/data:/var/lib/postgresql/data
-      - /home/shadowbane/projects/neofeeder/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - /home/shadowbane/projects/neofeeder/logs/postgresql:/var/log/postgresql
+      - ${APP_PATH_HOST}/pgsql/data:/var/lib/postgresql/data
+      - ${APP_PATH_HOST}/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ${APP_PATH_HOST}/logs/postgresql:/var/log/postgresql
     networks:
       - app-network
     deploy:
@@ -51,8 +51,8 @@ services:
       PGHOST: "db-pddikti"
       PGPORT: 54333
     volumes:
-      - /home/shadowbane/projects/neofeeder/prefill_pddikti:/prefill_pddikti
-      - /home/shadowbane/projects/neofeeder/logs/supervisor:/var/log/supervisor
+      - ${APP_PATH_HOST}/prefill_pddikti:/prefill_pddikti
+      - ${APP_PATH_HOST}/logs/supervisor:/var/log/supervisor
     networks:
       - app-network
     depends_on:
