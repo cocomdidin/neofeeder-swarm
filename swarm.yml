@@ -1,0 +1,62 @@
+version: '3.2'
+
+networks:
+  app-network:
+    external: true
+
+services:
+
+  # PgSQL Service
+  db-pddikti:
+    image: postgres:12
+    command: [
+      "postgres",
+      "-c", "logging_collector=on",
+      "-c", "log_directory=/var/log/postgresql",
+      "-c", "log_filename=postgresql-%Y-%m-%d_%H%M.log",
+      "-c", "log_statement=all",
+      "-c", "log_timezone=Asia/Jakarta",
+      "-c", "log_rotation_age=1d",
+      "-c", "log_rotation_size=15MB",
+      "-c", "log_line_prefix='%t [%p] %q%d@%u, %h, %a, %l '"
+    ]
+    tty: true
+    volumes:
+      - /home/shadowbane/projects/neofeeder/pgsql/data:/var/lib/postgresql/data
+      - /home/shadowbane/projects/neofeeder/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - /home/shadowbane/projects/neofeeder/logs/postgresql:/var/log/postgresql
+    networks:
+      - app-network
+    deploy:
+      restart_policy:
+        condition: any
+
+  # Application
+  app-pddikti:
+    image: 234354743961.dkr.ecr.ap-southeast-1.amazonaws.com/feeder:latest
+    ports:
+      - target: 8100
+        published: 8100
+        protocol: tcp
+        mode: host
+      - target: 3003
+        published: 3003
+        protocol: tcp
+        mode: host
+    tty: true
+    environment:
+      TZ: "Asia/Jakarta"
+      SERVICE_NAME: "app"
+      SERVICE_TAGS: "1.0.2"
+      PGHOST: "db-pddikti"
+      PGPORT: 54333
+    volumes:
+      - /home/shadowbane/projects/neofeeder/prefill_pddikti:/prefill_pddikti
+      - /home/shadowbane/projects/neofeeder/logs/supervisor:/var/log/supervisor
+    networks:
+      - app-network
+    depends_on:
+      - db-pddikti
+    deploy:
+      restart_policy:
+        condition: any

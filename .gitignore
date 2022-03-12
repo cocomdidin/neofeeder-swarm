@@ -1,0 +1,4 @@
+pgsql/data/*
+logs/*.log
+prefill_pddikti/*
+source/*
