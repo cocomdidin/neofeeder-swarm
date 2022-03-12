@@ -23,8 +23,7 @@ This implementation bypass that issue, thus gives us better control over our inf
    $ docker build -t myrepository/feeder:latest -f DockerfileSwarm
     ```
 7. Edit configuration of `swarm.yml` as you need.
-<br>
-   > :warning: <b>Please note that i'm using `234354743961.dkr.ecr.ap-southeast-1.amazonaws.com/feeder:latest` as image for `app-pddikti`. <br><br>Change with your own image!<b>
+    > :warning: **WARNING**: <b>Please note that i'm using `234354743961.dkr.ecr.ap-southeast-1.amazonaws.com/feeder:latest` as image for `app-pddikti`. <br><br>Change with your own image!<b>
 9. Deploy the stack:
     ```bash
    $ env APP_PATH_HOST="/path/to/this-repository" docker stack deploy -c swarm.yml neofeeder-university1
