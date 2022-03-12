@@ -5,7 +5,7 @@ LABEL maintainer="Adli I. Ifkar <adly.shadowbane@gmail.com>"
 RUN apt-get update && \
     apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata \
+    dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update \
     && apt-get install -y --allow-unauthenticated \
