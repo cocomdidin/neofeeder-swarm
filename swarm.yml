@@ -1,7 +1,7 @@
 version: '3.2'
 
 networks:
-  app-network:
+  feeder1-network:
     external: true
 
 services:
@@ -11,14 +11,8 @@ services:
     image: postgres:12
     command: [
       "postgres",
-      "-c", "logging_collector=on",
-      "-c", "log_directory=/var/log/postgresql",
-      "-c", "log_filename=postgresql-%Y-%m-%d_%H%M.log",
       "-c", "log_statement=all",
-      "-c", "log_timezone=Asia/Jakarta",
-      "-c", "log_rotation_age=1d",
-      "-c", "log_rotation_size=15MB",
-      "-c", "log_line_prefix='%t [%p] %q%d@%u, %h, %a, %l '"
+      "-c", "log_timezone=Asia/Jakarta"
     ]
     tty: true
     volumes:
@@ -26,23 +20,23 @@ services:
       - ${APP_PATH_HOST}/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ${APP_PATH_HOST}/logs/postgresql:/var/log/postgresql
     networks:
-      - app-network
+      - feeder1-network
     deploy:
       restart_policy:
         condition: any
 
   # Application
   app-pddikti:
-    image: 234354743961.dkr.ecr.ap-southeast-1.amazonaws.com/feeder:latest
+    image: univ1/feeder:latest
     ports:
       - target: 8100
         published: 8100
         protocol: tcp
         mode: host
-      - target: 3003
-        published: 3003
-        protocol: tcp
-        mode: host
+      # - target: 3003
+      #   published: 3003
+      #   protocol: tcp
+      #   mode: host
     tty: true
     environment:
       TZ: "Asia/Jakarta"
@@ -54,7 +48,7 @@ services:
       - ${APP_PATH_HOST}/prefill_pddikti:/prefill_pddikti
       - ${APP_PATH_HOST}/logs/supervisor:/var/log/supervisor
     networks:
-      - app-network
+      - feeder1-network
     depends_on:
       - db-pddikti
     deploy:

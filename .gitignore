@@ -1,4 +1,7 @@
-pgsql/data/*
+source
 logs/*/*.log
-prefill_pddikti/*
-source/*
+app
+etc
+nginx
+pgsql
+prefill_pddikti

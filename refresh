@@ -5,12 +5,10 @@ sudo rm -rf app
 sudo rm -rf etc
 sudo rm -rf nginx
 sudo rm -rf pgsql
+sudo rm -rf prefill_pddikti
 
 cp -R source/app .
 cp -R source/etc .
 cp -R source/nginx .
 cp -R source/pgsql .
-
-# removing prefills
-sudo rm -rf prefill_pddikti/*
-cp source/prefill/btp/* prefill_pddikti/
+cp -R source/prefill_pddikti .
