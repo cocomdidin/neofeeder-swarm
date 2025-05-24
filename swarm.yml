@@ -1,42 +1,30 @@
-version: '3.2'
-
-networks:
-  feeder1-network:
-    external: true
-
 services:
 
   # PgSQL Service
   db-pddikti:
     image: postgres:12
-    command: [
-      "postgres",
-      "-c", "log_statement=all",
-      "-c", "log_timezone=Asia/Jakarta"
-    ]
+    command:
+      - "postgres"
+      - "-p"
+      - "54333"
+    environment:
+      TZ: "Asia/Jakarta"
     tty: true
     volumes:
       - ${APP_PATH_HOST}/pgsql/data:/var/lib/postgresql/data
       - ${APP_PATH_HOST}/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ${APP_PATH_HOST}/logs/postgresql:/var/log/postgresql
-    networks:
-      - feeder1-network
     deploy:
       restart_policy:
         condition: any
 
   # Application
   app-pddikti:
-    image: univ1/feeder:latest
+    image: unuha/feeder:latest
     ports:
       - target: 8100
-        published: 8100
+        published: 8200
         protocol: tcp
         mode: host
-      # - target: 3003
-      #   published: 3003
-      #   protocol: tcp
-      #   mode: host
     tty: true
     environment:
       TZ: "Asia/Jakarta"
@@ -47,8 +35,6 @@ services:
     volumes:
       - ${APP_PATH_HOST}/prefill_pddikti:/prefill_pddikti
       - ${APP_PATH_HOST}/logs/supervisor:/var/log/supervisor
-    networks:
-      - feeder1-network
     depends_on:
       - db-pddikti
     deploy:
