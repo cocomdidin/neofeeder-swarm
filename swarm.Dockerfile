@@ -1,7 +1,5 @@
 FROM ubuntu:20.04
 
-LABEL maintainer="Adli I. Ifkar <adly.shadowbane@gmail.com>"
-
 RUN apt-get update && \
     apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
